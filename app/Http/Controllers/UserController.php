@@ -58,7 +58,7 @@ class UserController extends Controller
         // Save user Profile data...
         $user->userProfile()->create($request->userProfile);
 
-        return redirect()->route('users.index')->withSuccess(__('message.msg_added',['name' => __('users.store')]));
+        return redirect()->route('users.index')->withSuccess(__('global-message.msg_added',['name' => __('users.store')]));
     }
 
     /**
@@ -117,16 +117,13 @@ class UserController extends Controller
 
         $request['password'] = $request->password != '' ? bcrypt($request->password) : $user->password;
 
-        // User user data...
         $user->fill($request->all())->update();
 
-        // Save user image...
         if (isset($request->profile_image) && $request->profile_image != null) {
             $user->clearMediaCollection('profile_image');
             $user->addMediaFromRequest('profile_image')->toMediaCollection('profile_image');
         }
 
-        // user profile data....
         $user->userProfile->fill($request->userProfile)->update();
 
         if(auth()->check()){

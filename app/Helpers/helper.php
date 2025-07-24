@@ -65,6 +65,7 @@ function getSingleMedia($model, $collection = 'image_icon',$skip=true)
         $media = $model->getFirstMedia($collection);
     }
     $imgurl= isset($media)?$media->getPath():'';
+
     if (file_exists($imgurl)) {
         return $media->getFullUrl();
     }

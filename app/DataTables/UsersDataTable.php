@@ -19,12 +19,6 @@ class UsersDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('userProfile.country', function($query) {
-                return $query->userProfile->country ?? '-';
-            })
-            ->editColumn('userProfile.company_name', function($query) {
-                return $query->userProfile->company_name ?? '-';
-            })
             ->editColumn('status', function($query) {
                 $status = 'warning';
                 switch ($query->status) {
@@ -40,22 +34,9 @@ class UsersDataTable extends DataTable
                 }
                 return '<span class="text-capitalize badge bg-'.$status.'">'.$query->status.'</span>';
             })
-            ->editColumn('created_at', function($query) {
-                return date('Y/m/d',strtotime($query->created_at));
-            })
             ->filterColumn('full_name', function($query, $keyword) {
                 $sql = "CONCAT(users.first_name,' ',users.last_name)  like ?";
                 return $query->whereRaw($sql, ["%{$keyword}%"]);
-            })
-            ->filterColumn('userProfile.company_name', function($query, $keyword) {
-                return $query->orWhereHas('userProfile', function($q) use($keyword) {
-                    $q->where('company_name', 'like', "%{$keyword}%");
-                });
-            })
-            ->filterColumn('userProfile.country', function($query, $keyword) {
-                return $query->orWhereHas('userProfile', function($q) use($keyword) {
-                    $q->where('country', 'like', "%{$keyword}%");
-                });
             })
             ->addColumn('action', 'users.action')
             ->rawColumns(['action','status']);
@@ -69,7 +50,7 @@ class UsersDataTable extends DataTable
      */
     public function query()
     {
-        $model = User::query()->with('userProfile');
+        $model = User::query();
         return $this->applyScopes($model);
     }
 
@@ -104,10 +85,7 @@ class UsersDataTable extends DataTable
             ['data' => 'full_name', 'name' => 'full_name', 'title' => 'FULL NAME', 'orderable' => false],
             ['data' => 'phone_number', 'name' => 'phone_number', 'title' => 'Phone Number'],
             ['data' => 'email', 'name' => 'email', 'title' => 'Email'],
-            ['data' => 'userProfile.country', 'name' => 'userProfile.country', 'title' => 'Country'],
             ['data' => 'status', 'name' => 'status', 'title' => 'Status'],
-            ['data' => 'userProfile.company_name', 'name' => 'userProfile.company_name', 'title' => 'Company'],
-            ['data' => 'created_at', 'name' => 'created_at', 'title' => 'Join Date'],
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

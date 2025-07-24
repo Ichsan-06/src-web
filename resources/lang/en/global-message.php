@@ -18,4 +18,5 @@ return [
     'save' => 'Save',
     'update' => 'Update',
     'cancel'=>'Cancel',
+    'msg_added' => ':name',
 ];
