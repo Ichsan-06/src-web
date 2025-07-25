@@ -1,14 +1,15 @@
 <?php
 
 // Controllers
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Security\RolePermission;
-use App\Http\Controllers\Security\RoleController;
-use App\Http\Controllers\Security\PermissionController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Artisan;
-// Packages
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\Security\RoleController;
+// Packages
+use App\Http\Controllers\Security\RolePermission;
+use App\Http\Controllers\Security\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Users Module
     Route::resource('users', UserController::class);
+    Route::resource('banners', BannerController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {
