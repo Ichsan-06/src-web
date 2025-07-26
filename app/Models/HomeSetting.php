@@ -13,14 +13,49 @@ class HomeSetting extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
+        'company_name',
+        'company_description',
+        'company_address',
+        'company_phone',
+        'company_email',
+        'whatsapp',
+        'facebook',
+        'instagram',
+        'twitter',
+        'linkedin',
+        'youtube',
+        'latitude',
+        'longitude',
         'logo',
         'favicon',
+
+        //Section 1
+        'section_1_title',
+        'section_1_sub_title',
+        'section_1_description',
+
+        //Section 2
+        'section_2_title',
+        'section_2_sub_title',
+        'section_2_banner',
+
+        //Section 3
+        'section_3_title',
+        'section_3_sub_title',
         'video_1',
         'registered_shop',
         'wholesale_partners',
         'paguyuban_src',
         'bumn_partner',
         'total_province',
+
+        //Section 4
+        'section_4_title',
+        'section_4_sub_title',
+
+        //Section 5
+        'section_5_title',
+        'section_5_sub_title',
     ];
 
     protected $appends = [
@@ -54,5 +89,15 @@ class HomeSetting extends Model implements HasMedia
     public function getVideo1Attribute()
     {
         return $this->getFirstMediaUrl('video_1');
+    }
+
+    public function homeSliders()
+    {
+        return $this->hasMany(HomeSlider::class);
+    }
+
+    public function homeSection4s()
+    {
+        return $this->hasMany(HomeSection4::class);
     }
 }

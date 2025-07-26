@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ env('APP_NAME') }} | Responsive Bootstrap 5 Admin Dashboard Template</title>
+    <title>{{ env('APP_NAME') }} | PT SRC Indonesia Sembilan</title>
 
     @include('partials.dashboard._head')
 </head>
@@ -24,5 +24,52 @@
     </div>
     <a class="btn btn-fixed-end btn-secondary btn-icon btn-dashboard z-3" href="{{route('landing-pages.index')}}">Landing Pages</a>
 </body>
+
+<script>
+    $(document).ready(function () {
+        $('#add-image').click(function () {
+            const imageGroup = `
+                <div class="row image-group">
+                    <div class="form-group col-md-10">
+                        <input type="file" name="section_1_images[]" class="form-control" accept="image/*">
+                    </div>
+                    <div class="form-group col-md-2 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger remove-image">Hapus</button>
+                    </div>
+                </div>`;
+            $('.image-wrapper').append(imageGroup);
+        });
+
+        $(document).on('click', '.remove-image', function () {
+            $(this).closest('.image-group').remove();
+        });
+    });
+
+    let blockIndex = 1;
+
+    $('#add-block').click(function () {
+        const block = `
+            <div class="row dynamic-group mb-3">
+                <div class="form-group col-md-4">
+                    <input type="text" name="section_4_blocks[${blockIndex}][title]" class="form-control" placeholder="Title">
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" name="section_4_blocks[${blockIndex}][subtitle]" class="form-control" placeholder="Sub Title">
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="file" name="section_4_blocks[${blockIndex}][file]" class="form-control" accept="image/*">
+                </div>
+                <div class="form-group col-md-1 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger remove-block">X</button>
+                </div>
+            </div>`;
+        $('#dynamic-blocks').append(block);
+        blockIndex++;
+    });
+
+    $(document).on('click', '.remove-block', function () {
+        $(this).closest('.dynamic-group').remove();
+    });
+</script>
 
 </html>

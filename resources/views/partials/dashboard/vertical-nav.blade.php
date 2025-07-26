@@ -123,6 +123,19 @@
         </a>
         <ul class="sub-nav collapse" id="sidebar-home" data-bs-parent="#sidebar">
             <li class="nav-item">
+                <a class="nav-link {{activeRoute(route('home_setting.index'))}}" href="{{route('home_setting.index')}}">
+                    <i class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon"> W </i>
+                    <span class="item-name">Home Setting</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{activeRoute(route('banners.index'))}}" href="{{route('banners.index')}}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">

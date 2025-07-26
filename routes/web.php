@@ -10,7 +10,7 @@ use App\Http\Controllers\Security\RoleController;
 // Packages
 use App\Http\Controllers\Security\RolePermission;
 use App\Http\Controllers\Security\PermissionController;
-
+use App\Http\Controllers\HomeSettingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Users Module
     Route::resource('users', UserController::class);
     Route::resource('banners', BannerController::class);
+    Route::resource('home_setting', HomeSettingController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {

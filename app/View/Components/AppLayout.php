@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+
 class AppLayout extends Component
 {
     public $layout, $dir, $assets, $isHeader1, $isFooter, $isFooter1, $isFooter2 ;
@@ -28,25 +29,25 @@ class AppLayout extends Component
     {
         switch($this->layout){
             case 'horizontal':
-                return view('layouts.dashboard.horizontal');
+                // return view('layouts.dashboard.horizontal');
             break;
             case 'dualhorizontal':
-                return view('layouts.dashboard.dual-horizontal');
+                // return view('layouts.dashboard.dual-horizontal');
             break;
             case 'dualcompact':
-                return view('layouts.dashboard.dual-compact');
+                // return view('layouts.dashboard.dual-compact');
             break;
             case 'boxed':
-                return view('layouts.dashboard.boxed');
+                // return view('layouts.dashboard.boxed');
             break;
             case 'boxedfancy':
-                return view('layouts.dashboard.boxed-fancy');
+                // return view('layouts.dashboard.boxed-fancy');
             break;
             case 'simple':
-                return view('layouts.dashboard.simple');
+                // return view('layouts.dashboard.simple');
             break;
             case 'landing':
-                return view('landing-pages.layouts.default');
+                // return view('landing-pages.layouts.default');
             break;
             default:
                 return view('layouts.dashboard.dashboard');
