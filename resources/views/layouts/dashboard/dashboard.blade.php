@@ -18,6 +18,12 @@
 
     <title>{{ env('APP_NAME') }} | PT SRC Indonesia Sembilan</title>
 
+    <style>
+        :root {
+          --bs-primary: #ff0000; /* Ganti dengan warna yang kamu mau */
+        }
+        </style>
+
     @include('partials.dashboard._head')
 </head>
 
