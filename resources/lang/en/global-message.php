@@ -19,4 +19,5 @@ return [
     'update' => 'Update',
     'cancel'=>'Cancel',
     'msg_added' => ':name',
+    'delete_success' => ':name has been deleted successfully',
 ];

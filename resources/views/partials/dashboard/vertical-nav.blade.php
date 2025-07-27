@@ -223,8 +223,8 @@
                 </a>
             </li>
 
-            {{-- <li class="nav-item">
-                <a class="nav-link {{activeRoute(route('product.index'))}}" href="{{route('product.index')}}">
+            <li class="nav-item">
+                <a class="nav-link {{activeRoute(route('products.index'))}}" href="{{route('products.index')}}">
                     <i class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
                             <g>
@@ -233,9 +233,9 @@
                         </svg>
                     </i>
                     <i class="sidenav-mini-icon"> U </i>
-                    <span class="item-name">Article</span>
+                    <span class="item-name">Product</span>
                 </a>
-            </li> --}}
+            </li>
         </ul>
     </li>
 

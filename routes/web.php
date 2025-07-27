@@ -8,12 +8,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ArticleController;
 // Packages
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeSettingController;
 use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\RolePermission;
-use App\Http\Controllers\Security\PermissionController;
 use App\Http\Controllers\CategoryProductController;
+use App\Http\Controllers\Security\PermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,6 +72,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('article', ArticleController::class);
 
     Route::resource('category_product', CategoryProductController::class);
+    Route::resource('products', ProductController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {
