@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeSettingController;
 use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\RolePermission;
 use App\Http\Controllers\Security\PermissionController;
+use App\Http\Controllers\CategoryProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Category
     Route::resource('categories', CategoryController::class);
     Route::resource('article', ArticleController::class);
+
+    Route::resource('category_product', CategoryProductController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {
