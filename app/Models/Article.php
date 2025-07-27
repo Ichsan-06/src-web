@@ -17,10 +17,19 @@ class Article extends Model implements HasMedia
         'content',
     ];
 
+    protected $appends = ['tags_name'];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')
             ->singleFile();
+    }
+
+
+    // add atribute getTags with sperator ,
+    public function getTagsNameAttribute()
+    {
+        return $this->tags->pluck('name')->implode(', ');
     }
 
     public function tags()

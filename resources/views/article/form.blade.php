@@ -34,12 +34,23 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="content">Content: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::textarea('content', old('content'), ['class' => 'form-control', 'placeholder' => 'Content', 'required']) }}
+                                    {{-- {{ Form::textarea('content', old('content'), ['class' => 'form-control', 'placeholder' => 'Content', 'required']) }} --}}
+                                    <textarea id="mytextarea" name="content">{{ old('content') ?? $data->content ?? '' }}</textarea>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="file">File: <span
-                                            class="text-danger">*</span></label>
+                                    <label class="form-label fw-bold" for="file">File: <span class="text-danger">*</span></label>
+                                    @if (isset($id))
+                                        <p><img src="{{ $data->getFirstMediaUrl('image') }}" alt="{{ $data->title }}" width="100"></p>
+                                    @endif
                                     {{ Form::file('file', ['class' => 'form-control', 'placeholder' => 'File', 'required']) }}
+                                    @if (isset($id))
+                                        <span class="text-muted">* File is not required if you don't want to change it</span>
+                                    @endif
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="form-label fw-bold" for="tags">Tags: <span
+                                            class="text-danger">*</span></label>
+                                    <input name='tags' class="form-control w-100" placeholder='Masukkan tag' value="{{ old('tags') ?? $data->tags_name ?? '' }}">
                                 </div>
                             </div>
                             <button

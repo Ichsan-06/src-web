@@ -6,6 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.tiny.cloud/1/tmy6n7njgm3jv6287bzh2536b6xx15am7i26wu2xfc5rno0h/tinymce/6/tinymce.min.js"></script>
+    <script>
+    tinymce.init({
+        selector: '#mytextarea'
+    });
+    </script>
+
 
     <title>{{ env('APP_NAME') }} | PT SRC Indonesia Sembilan</title>
 
@@ -24,6 +33,7 @@
     </div>
     <a class="btn btn-fixed-end btn-secondary btn-icon btn-dashboard z-3" href="{{route('landing-pages.index')}}">Landing Pages</a>
 </body>
+
 
 <script>
     $(document).ready(function () {
@@ -70,6 +80,10 @@
     $(document).on('click', '.remove-block', function () {
         $(this).closest('.dynamic-group').remove();
     });
+
+    new Tagify(document.querySelector('input[name=tags]'));
+
+
 </script>
 
 </html>

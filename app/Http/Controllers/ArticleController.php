@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Helpers\AuthHelper;
+use App\Models\ArticleTag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\DataTables\ArticleDataTable;
 
 class ArticleController extends Controller
@@ -40,7 +42,32 @@ class ArticleController extends Controller
             'content' => 'required',
             'file' => 'required',
         ]);
-        Article::create($request->all());
+
+        DB::beginTransaction();
+
+        try {
+            $article = Article::create($request->all());
+
+            if($request->has('tags')) {
+                $tags = json_decode($request->tags);
+                foreach ($tags as $key => $value) {
+                    ArticleTag::create([
+                        'article_id' => $article->id,
+                        'name' => $value->value,
+                    ]);
+                }
+            }
+
+            if($request->hasFile('file')) {
+                $article->addMediaFromRequest('file')->toMediaCollection('image');
+            }
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('errors', 'Article created failed');
+        }
+
         return redirect()->route('article.index')->with('success', 'Article created successfully');
     }
 
@@ -59,6 +86,7 @@ class ArticleController extends Controller
     {
         $data = Article::findOrFail($id);
 
+
         return view('article.form', compact('data','id'));
     }
 
@@ -67,9 +95,27 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $category->fill($request->all())->update();
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'file' => 'required',
+        ]);
+
+        $article = Article::findOrFail($id);
+        $article->fill($request->all())->update();
+
+        ArticleTag::where('article_id', $article->id)->delete();
+        if($request->has('tags')) {
+            $tags = json_decode($request->tags);
+            foreach ($tags as $key => $value) {
+
+                ArticleTag::create([
+                    'article_id' => $article->id,
+                    'name' => $value->value,
+                ]);
+            }
+        }
+        return redirect()->route('article.index')->with('success', 'Article updated successfully');
     }
 
     /**
