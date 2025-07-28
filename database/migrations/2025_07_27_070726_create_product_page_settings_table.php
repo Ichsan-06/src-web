@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_page_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('link_youtube');
+            $table->string('link_youtube')->nullable();
             $table->timestamps();
         });
     }

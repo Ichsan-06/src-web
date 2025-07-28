@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('product_benefits', function (Blueprint $table) {
             $table->id();
             //title
-            $table->string('title');
+            $table->string('title')->nullable();
             //description
-            $table->text('description');
+            $table->text('description')->nullable();
             //foreign product_page_setting_id
             $table->foreignId('product_page_setting_id')->constrained('product_page_settings')->cascadeOnDelete();
             $table->timestamps();

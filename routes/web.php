@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeSettingController;
 use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\RolePermission;
 use App\Http\Controllers\CategoryProductController;
+use App\Http\Controllers\ProductPageSettingController;
 use App\Http\Controllers\Security\PermissionController;
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('category_product', CategoryProductController::class);
     Route::resource('products', ProductController::class);
+    Route::resource('product_page_setting', ProductPageSettingController::class);
+    Route::post('product_page_setting/add-benefit', [ProductPageSettingController::class, 'addBenefit'])->name('product_page_setting.add-benefit');
 });
 
 //App Details Page => 'Dashboard'], function() {

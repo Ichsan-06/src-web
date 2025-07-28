@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProductPageSetting extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'link_youtube',
+    ];
 }
