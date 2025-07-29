@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Support\Facades\Auth;
 function removeSession($session){
     if(\Session::has($session)){
         \Session::forget($session);
@@ -98,4 +100,12 @@ function getFileExistsCheck($media)
         }
     }
     return $mediaCondition;
+}
+
+if (!function_exists('userPermissions')) {
+    function userPermissions()
+    {
+        $user = Auth::user();
+        return $user->getAllPermissions()->pluck('name')->toArray();
+    }
 }

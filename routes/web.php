@@ -58,6 +58,12 @@ Route::get('/', [HomeController::class, 'uisheet'])->name('uisheet');
 Route::group(['middleware' => 'auth'], function () {
     // Permission Module
     Route::get('/role-permission',[RolePermission::class, 'index'])->name('role.permission.list');
+    Route::get('/role-permission/create',[RolePermission::class, 'create'])->name('role.permission.create');
+    Route::post('/role-permission/store',[RolePermission::class, 'store'])->name('role.permission.store');
+    Route::delete('/role-permission/delete/{id}',[RolePermission::class, 'destroy'])->name('role.permission.destroy');
+    Route::get('/role-permission/{id}/update',[RolePermission::class, 'update'])->name('role.permission.update');
+    Route::post('/role-permission/update/{id}',[RolePermission::class, 'updateStore'])->name('role.permission.updateStore');
+
     Route::resource('permission',PermissionController::class);
     Route::resource('role', RoleController::class);
 
