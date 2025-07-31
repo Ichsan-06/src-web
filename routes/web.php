@@ -1,14 +1,15 @@
 <?php
 
 // Controllers
-use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ReviewController;
 // Packages
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeSettingController;
@@ -85,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('product_page_setting/add-benefit', [ProductPageSettingController::class, 'addBenefit'])->name('product_page_setting.add-benefit');
 
     Route::resource('review', ReviewController::class);
+    Route::resource('menu', MenuController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {
