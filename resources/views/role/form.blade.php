@@ -4,14 +4,11 @@
         $id = $id ?? null;
         ?>
         @if (isset($id))
-            {!! Form::model($role, [
-                'route' => ['role.permission.updateStore', $id],
-                'method' => 'post',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
+            <form action="{{ route('role.permission.updateStore', $id) }}" method="post" enctype="multipart/form-data">
         @else
-            {!! Form::open(['route' => ['role.permission.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            <form action="{{ route('role.permission.store') }}" method="post" enctype="multipart/form-data">
         @endif
+        @csrf
 
         <div class="row">
             <div class="col-xl-12 col-lg-12">
@@ -30,7 +27,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="name">Name: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('name', old('name') ?? $role->title ?? null, ['class' => 'form-control', 'placeholder' => 'Name', 'required']) }}
+                                    <input type="text" name="name" class="form-control" value="{{ old('name') ?? $role->title ?? null }}" placeholder="Name" required>
                                 </div>
                             </div>
 
@@ -70,6 +67,6 @@
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        </form>
     </div>
 </x-app-layout>
