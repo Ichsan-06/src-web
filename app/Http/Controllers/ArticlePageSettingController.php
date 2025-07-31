@@ -12,7 +12,8 @@ class ArticlePageSettingController extends Controller
      */
     public function index()
     {
-        //
+        $articlePageSettings = ArticlePageSetting::first();
+        return view('article_page_setting.index', compact('articlePageSettings'));
     }
 
     /**
@@ -28,7 +29,13 @@ class ArticlePageSettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $articlePage = ArticlePageSetting::first();
+        if ($articlePage) {
+            $articlePage->update($request->all());
+        } else {
+            ArticlePageSetting::create($request->all());
+        }
+        return redirect()->route('article_page_setting.index');
     }
 
     /**

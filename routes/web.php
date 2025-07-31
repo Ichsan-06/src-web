@@ -1,14 +1,15 @@
 <?php
 
 // Controllers
+use App\Models\ArticlePageSetting;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
-use App\Http\Controllers\ReviewController;
 // Packages
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\HomeSettingController;
 use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\RolePermission;
 use App\Http\Controllers\CategoryProductController;
+use App\Http\Controllers\ArticlePageSettingController;
 use App\Http\Controllers\ProductPageSettingController;
 use App\Http\Controllers\Security\PermissionController;
 /*
@@ -87,6 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('review', ReviewController::class);
     Route::resource('menu', MenuController::class);
+    Route::resource('article_page_setting', ArticlePageSettingController::class);
 });
 
 //App Details Page => 'Dashboard'], function() {
