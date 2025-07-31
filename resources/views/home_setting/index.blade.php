@@ -138,17 +138,21 @@
                             <button type="button" class="btn btn-sm btn-primary" id="add-image">+ Tambah Gambar</button>
                         </div>
                         <div class="image-wrapper">
-                            @foreach ($homeSetting->homeSliders as $slider)
-                                <img src="{{ asset($slider->getFirstMediaUrl('section_1_images')) }}" alt="Slider" class="img-fluid block mb-2" width="100">
-                                <div class="row image-group">
-                                    <div class="form-group col-md-10">
-                                        <input type="file" name="section_1_images[]" class="form-control" accept="image/*">
+                            @if ($homeSetting)
+                                @foreach ($homeSetting->homeSliders as $slider)
+                                    <img src="{{ asset($slider->getFirstMediaUrl('section_1_images')) }}" alt="Slider" class="img-fluid block mb-2" width="100">
+                                    <div class="row image-group">
+                                        <div class="form-group col-md-10">
+                                            <input type="file" name="section_1_images[]" class="form-control" accept="image/*">
+                                        </div>
+                                        <div class="form-group col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-danger remove-image">Hapus</button>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-2 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger remove-image">Hapus</button>
-                                    </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @else
+                                <p>Tidak ada gambar</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -172,7 +176,7 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="section_2_banner">Banner:</label>
-                                    @if ($homeSetting->getFirstMediaUrl('section_2_banner'))
+                                    @if ($homeSetting && $homeSetting->getFirstMediaUrl('section_2_banner'))
                                         <p> <img src="{{ $homeSetting->getFirstMediaUrl('section_2_banner') }}" alt="Section 2 Banner" width="100" class="mb-2"></p>
                                     @endif
                                     {{ Form::file('section_2_banner', ['class' => 'form-control']) }}
@@ -242,7 +246,7 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="section_4_banner">Banner:</label>
-                                    @if ($homeSetting->getFirstMediaUrl('section_4_banner'))
+                                    @if ($homeSetting && $homeSetting->getFirstMediaUrl('section_4_banner'))
                                         <p> <img src="{{ $homeSetting->getFirstMediaUrl('section_4_banner') }}" alt="Section 4 Banner" width="100" class="mb-2"></p>
                                     @endif
                                     {{ Form::file('section_4_banner', ['class' => 'form-control']) }}
@@ -254,24 +258,25 @@
                             <button type="button" class="btn btn-sm btn-primary mb-3" id="add-block">+ Tambah</button>
                             <div id="dynamic-blocks">
                                 <div class="row dynamic-group mb-3">
-
-                                    @foreach ($homeSetting->homeSection4s as $index => $section4)
-                                        <div class="form-group col-md-4">
-                                            <label class="form-label fw-bold">Title:</label>
-                                            <input type="text" name="section_4_blocks[{{ $index }}][title]" value="{{ old('section_4_blocks.0.title') ?? $section4->title ?? null }}" class="form-control" placeholder="Title">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="form-label fw-bold">Sub Title:</label>
-                                            <input type="text" name="section_4_blocks[{{ $index }}][subtitle]" value="{{ old('section_4_blocks.0.subtitle') ?? $section4->subtitle ?? null }}" class="form-control" placeholder="Sub Title">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label class="form-label fw-bold">File:</label>
-                                            <input type="file" name="section_4_blocks[{{ $index }}][file]" class="form-control" accept="image/*">
-                                        </div>
-                                        <div class="form-group col-md-1 d-flex align-items-end">
-                                            <button type="button" class="btn btn-danger remove-block">X</button>
-                                        </div>
-                                    @endforeach
+                                    @if ($homeSetting)
+                                        @foreach ($homeSetting->homeSection4s as $index => $section4)
+                                            <div class="form-group col-md-4">
+                                                <label class="form-label fw-bold">Title:</label>
+                                                <input type="text" name="section_4_blocks[{{ $index }}][title]" value="{{ old('section_4_blocks.0.title') ?? $section4->title ?? null }}" class="form-control" placeholder="Title">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="form-label fw-bold">Sub Title:</label>
+                                                <input type="text" name="section_4_blocks[{{ $index }}][subtitle]" value="{{ old('section_4_blocks.0.subtitle') ?? $section4->subtitle ?? null }}" class="form-control" placeholder="Sub Title">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="form-label fw-bold">File:</label>
+                                                <input type="file" name="section_4_blocks[{{ $index }}][file]" class="form-control" accept="image/*">
+                                            </div>
+                                            <div class="form-group col-md-1 d-flex align-items-end">
+                                                <button type="button" class="btn btn-danger remove-block">X</button>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>

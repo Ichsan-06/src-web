@@ -12,4 +12,9 @@ class ProductPageSetting extends Model
     protected $fillable = [
         'link_youtube',
     ];
+
+    public function productBenefit()
+    {
+        return $this->hasMany(ProductBenefit::class);
+    }
 }

@@ -15,6 +15,7 @@ class Article extends Model implements HasMedia
     protected $fillable = [
         'title',
         'content',
+        'category_id',
     ];
 
     protected $appends = ['tags_name'];

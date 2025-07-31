@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\HomeSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Article
+Route::get('article-category', [ArticleController::class, 'articleCategory']);
+Route::get('articles', [ArticleController::class, 'index']);
+Route::get('home-setting', [HomeSettingController::class, 'index']);
+Route::get('home-setting', [HomeSettingController::class, 'index']);
+Route::get('product', [ProductController::class, 'index']);
+Route::get('product-category', [ProductController::class, 'productCategory']);
+Route::get('product-page-setting', [ProductController::class, 'productPageSetting']);
+Route::get('banner', [BannerController::class, 'index']);
+

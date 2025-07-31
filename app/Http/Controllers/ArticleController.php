@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Helpers\AuthHelper;
 use App\Models\ArticleTag;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\DataTables\ArticleDataTable;
@@ -28,8 +29,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
-        return view('article.form');
+        $category = Category::all();
+        return view('article.form', compact('category'));
     }
 
     /**
@@ -46,6 +47,7 @@ class ArticleController extends Controller
         DB::beginTransaction();
 
         try {
+
             $article = Article::create($request->all());
 
             if($request->has('tags')) {
@@ -65,6 +67,7 @@ class ArticleController extends Controller
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
+            dd($th);
             return redirect()->back()->with('errors', 'Article created failed');
         }
 

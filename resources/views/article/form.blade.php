@@ -38,6 +38,11 @@
                                     <textarea id="mytextarea" name="content">{{ old('content') ?? $data->content ?? '' }}</textarea>
                                 </div>
                                 <div class="form-group col-md-12">
+                                    <label class="form-label fw-bold" for="category_id">Category: <span
+                                            class="text-danger">*</span></label>
+                                    {{ Form::select('category_id', $category->pluck('name', 'id'), old('category_id'), ['class' => 'form-control', 'placeholder' => 'Select Category', 'required']) }}
+                                </div>
+                                <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="file">File: <span class="text-danger">*</span></label>
                                     @if (isset($id))
                                         <p><img src="{{ $data->getFirstMediaUrl('image') }}" alt="{{ $data->title }}" width="100"></p>
