@@ -1,75 +1,62 @@
 <x-app-layout :assets="$assets ?? []">
-    <div>
-        <?php
-        $id = $id ?? null;
-        ?>
+    <form action="{{ isset($id) ? route('article.update', $id) : route('article.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['article.update', $id],
-                'method' => 'patch',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
-        @else
-            {!! Form::open(['route' => ['article.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            @method('PATCH')
         @endif
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'New' }} Article Information</h4>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">{{ isset($id) ? 'Update' : 'New' }} Article Information</h4>
+                </div>
+                <div class="card-action">
+                    <a href="{{ route('article.index') }}" class="btn btn-primary" role="button">Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="new-user-info">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="form-label fw-bold" for="title">Title: <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control" value="{{ old('title') ?? $data->title ?? '' }}" placeholder="Title" required>
                         </div>
-                        <div class="card-action">
-                            <a href="{{ route('article.index') }}" class="btn btn-primary" role="button">Back</a>
+                        <div class="form-group col-md-12">
+                            <label class="form-label fw-bold" for="content">Content: <span class="text-danger">*</span></label>
+                            <textarea name="content" class="form-control" placeholder="Content" required>{{ old('content') ?? $data->content ?? '' }}</textarea>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="new-user-info">
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="title">Title: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => 'Title', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="content">Content: <span
-                                            class="text-danger">*</span></label>
-                                    {{-- {{ Form::textarea('content', old('content'), ['class' => 'form-control', 'placeholder' => 'Content', 'required']) }} --}}
-                                    <textarea id="mytextarea" name="content">{{ old('content') ?? $data->content ?? '' }}</textarea>
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="category_id">Category: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::select('category_id', $category->pluck('name', 'id'), old('category_id'), ['class' => 'form-control', 'placeholder' => 'Select Category', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="file">File: <span class="text-danger">*</span></label>
-                                    @if (isset($id))
-                                        <p><img src="{{ $data->getFirstMediaUrl('image') }}" alt="{{ $data->title }}" width="100"></p>
-                                    @endif
-                                    {{ Form::file('file', ['class' => 'form-control', 'placeholder' => 'File', 'required']) }}
-                                    @if (isset($id))
-                                        <span class="text-muted">* File is not required if you don't want to change it</span>
-                                    @endif
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label fw-bold" for="tags">Tags: <span
-                                            class="text-danger">*</span></label>
-                                    <input name='tags' class="form-control w-100" placeholder='Masukkan tag' value="{{ old('tags') ?? $data->tags_name ?? '' }}">
-                                </div>
-                            </div>
-                            <button
-                                onclick="window.location.href='{{ $id !== null ? route('article.index') : route('dashboard') }}'"
-                                class="btn btn-primary ">
-                                {{ $id !== null ? 'Cancel' : 'Cancel' }}
-                            </button>
-                            <button type="submit"
-                                class="btn btn-primary">{{ $id !== null ? 'Save' : 'Save' }}</button>
+                        <div class="form-group col-md-12">
+                            <label class="form-label fw-bold" for="category_id">Category: <span class="text-danger">*</span></label>
+                            <select name="category_id" class="form-control" required>
+                                <option value="" disabled selected>Select Category</option>
+                                @foreach ($category as $item)
+                                    <option value="{{ $item->id }}" {{ isset($id) && (old('category_id') == $item->id || $data->category_id == $item->id) ? 'selected' : '' }}>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label fw-bold" for="file">File: <span class="text-danger">*</span></label>
+                            @if (isset($id))
+                                <p><img src="{{ $data->getFirstMediaUrl('image') }}" alt="{{ $data->title }}" width="100"></p>
+                            @endif
+                            <input type="file" name="file" class="form-control" placeholder="File" {{ isset($id) ? '' : 'required' }}>
+                            @if (isset($id))
+                                <span class="text-muted">* File is not required if you don't want to change it</span>
+                            @endif
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="form-label fw-bold" for="tags">Tags: <span class="text-danger">*</span></label>
+                            <input type="text" name="tags" class="form-control" value="{{ old('tags') ?? $data->tags_name ?? '' }}" placeholder="Masukkan tag" required>
                         </div>
                     </div>
+                    <button type="button"
+                        onclick="window.location.href='{{ isset($id) ? route('article.index') : route('dashboard') }}'"
+                        class="btn btn-primary ">
+                        {{ isset($id) ? 'Cancel' : 'Cancel' }}
+                    </button>
+                    <button type="submit"
+                        class="btn btn-primary">{{ isset($id) ? 'Update' : 'Save' }}</button>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
-    </div>
+    </form>
 </x-app-layout>

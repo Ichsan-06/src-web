@@ -1,23 +1,16 @@
 <x-app-layout :assets="$assets ?? []">
     <div>
-        <?php
-        $id = $id ?? null;
-        ?>
-        @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['users.update', $id],
-                'method' => 'patch',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
-        @else
-            {!! Form::open(['route' => ['users.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
-        @endif
+        <form action="{{ isset($id) ? route('users.update', $id) : route('users.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @if (isset($id))
+                @method('PATCH')
+            @endif
         <div class="row">
             <div class="col-xl-3 col-lg-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'Add New' }} User</h4>
+                            <h4 class="card-title">{{ isset($id) ? 'Update' : 'Add New' }} User</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -25,13 +18,7 @@
                             <div class="profile-img-edit position-relative">
                                 <img src="{{ $profileImage ?? asset('images/avatars/01.png') }}" alt="User-Profile"
                                     class="profile-pic rounded avatar-100">
-                                {{-- <div class="upload-icone bg-primary"> --}}
-                                {{-- <svg class="upload-button" viewBox="0 0 24 24">
-                                            <path fill="#ffffff"
-                                                d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-                                        </svg> --}}
                                 <input class="file-upload mt-2" type="file" accept="image/*" name="profile_image">
-                                {{-- </div> --}}
                             </div>
                             <div class="img-extension mt-3">
                                 <div class="d-inline-block align-items-center">
@@ -47,25 +34,25 @@
                             <label class="form-label">Status:</label>
                             <div class="grid" style="--bs-gap: 1rem">
                                 <div class="form-check g-col-6">
-                                    {{ Form::radio('status', 'active', old('status') || true, ['class' => 'form-check-input', 'id' => 'status-active']) }}
+                                    <input class="form-check-input" type="radio" name="status" value="active" id="status-active" {{ old('status') == 'active' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="status-active">
                                         Active
                                     </label>
                                 </div>
                                 <div class="form-check g-col-6">
-                                    {{ Form::radio('status', 'pending', old('status'), ['class' => 'form-check-input', 'id' => 'status-pending']) }}
+                                    <input class="form-check-input" type="radio" name="status" value="pending" id="status-pending" {{ old('status') == 'pending' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="status-pending">
                                         Pending
                                     </label>
                                 </div>
                                 <div class="form-check g-col-6">
-                                    {{ Form::radio('status', 'banned', old('status'), ['class' => 'form-check-input', 'id' => 'status-banned']) }}
+                                    <input class="form-check-input" type="radio" name="status" value="banned" id="status-banned" {{ old('status') == 'banned' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="status-banned">
                                         Banned
                                     </label>
                                 </div>
                                 <div class="form-check g-col-6">
-                                    {{ Form::radio('status', 'inactive', old('status'), ['class' => 'form-check-input', 'id' => 'status-inactive']) }}
+                                    <input class="form-check-input" type="radio" name="status" value="inactive" id="status-inactive" {{ old('status') == 'inactive' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="status-inactive">
                                         Inactive
                                     </label>
@@ -74,24 +61,13 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">User Role: <span class="text-danger">*</span></label>
-                            {{ Form::select('user_role', $roles, old('user_role') ? old('user_role') : $data->user_type ?? 'user', ['class' => 'form-control', 'placeholder' => 'Select User Role']) }}
+                            <select class="form-control" name="user_role" required>
+                                <option value="" selected disabled>Select User Role</option>
+                                @foreach ($roles as $key => $role)
+                                    <option value="{{ $key }}" {{ old('user_role') == $key ? 'selected' : '' }}>{{ $role }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        {{-- <div class="form-group">
-                        <label class="form-label" for="furl">Facebook Url:</label>
-                        {{ Form::text('userProfile[facebook_url]', old('userProfile[facebook_url]'), ['class' => 'form-control', 'id' => 'furl', 'placeholder' => 'Facebook Url']) }}
-                     </div>
-                     <div class="form-group">
-                        <label class="form-label" for="turl">Twitter Url:</label>
-                        {{ Form::text('userProfile[twitter_url]', old('userProfile[twitter_url]'), ['class' => 'form-control', 'id' => 'turl', 'placeholder' => 'Twitter Url']) }}
-                     </div>
-                     <div class="form-group">
-                        <label class="form-label" for="instaurl">Instagram Url:</label>
-                        {{ Form::text('userProfile[instagram_url]', old('userProfile[instagram_url]'), ['class' => 'form-control', 'id' => 'instaurl', 'placeholder' => 'Instagram Url']) }}
-                     </div>
-                     <div class="form-group mb-0">
-                        <label class="form-label" for="lurl">Linkedin Url:</label>
-                        {{ Form::text('userProfile[linkdin_url]', old('userProfile[linkdin_url]'), ['class' => 'form-control', 'id' => 'lurl', 'placeholder' => 'Linkedin Url']) }}
-                     </div> --}}
                     </div>
                 </div>
             </div>
@@ -99,7 +75,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'New' }} User Information</h4>
+                            <h4 class="card-title">{{ isset($id) ? 'Update' : 'New' }} User Information</h4>
                         </div>
                         <div class="card-action">
                             <a href="{{ route('users.index') }}" class="btn btn-sm btn-primary" role="button">Back</a>
@@ -111,25 +87,25 @@
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="fname">First Name: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('first_name', old('first_name'), ['class' => 'form-control', 'placeholder' => 'First Name', 'required']) }}
+                                    <input class="form-control" type="text" name="first_name" placeholder="First Name" value="{{ old('first_name') ? old('first_name') : $data->first_name ?? '' }}" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="lname">Last Name: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('last_name', old('last_name'), ['class' => 'form-control', 'placeholder' => 'Last Name', 'required']) }}
+                                    <input class="form-control" type="text" name="last_name" placeholder="Last Name" value="{{ old('last_name') ? old('last_name') : $data->last_name ?? '' }}" required>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="add1">Address:</label>
-                                    {{ Form::textarea('userProfile[street_addr_1]', old('userProfile[street_addr_1]'), ['class' => 'form-control', 'id' => 'add1', 'placeholder' => 'Enter Street Address 1']) }}
+                                    <textarea class="form-control" name="userProfile[street_addr_1]" id="add1" placeholder="Enter Street Address 1" required>{{ old('userProfile[street_addr_1]') ? old('userProfile[street_addr_1]') : $data->userProfile->street_addr_1 ?? '' }}</textarea>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="mobno">Mobile Number:</label>
-                                    {{ Form::text('userProfile[phone_number]', old('userProfile[phone_number]'), ['class' => 'form-control', 'id' => 'mobno', 'placeholder' => 'Mobile Number']) }}
+                                    <input class="form-control" type="text" name="userProfile[phone_number]" id="mobno" placeholder="Mobile Number" value="{{ old('userProfile[phone_number]') ? old('userProfile[phone_number]') : $data->userProfile->phone_number ?? '' }}">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="email">Email: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => 'Enter e-mail', 'required']) }}
+                                    <input class="form-control" type="email" name="email" placeholder="Enter e-mail" value="{{ old('email') ? old('email') : $data->email ?? '' }}" required>
                                 </div>
                             </div>
                             <hr>
@@ -138,29 +114,28 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="uname">User Name: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('username', old('username'), ['class' => 'form-control', 'required', 'placeholder' => 'Enter Username']) }}
+                                    <input class="form-control" type="text" name="username" placeholder="Enter Username" value="{{ old('username') ? old('username') : $data->username ?? '' }}" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="pass">Password:</label>
-                                    {{ Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) }}
+                                    <input class="form-control" type="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="form-label fw-bold" for="rpass">Repeat Password:</label>
-                                    {{ Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => 'Repeat Password']) }}
+                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Repeat Password">
                                 </div>
                             </div>
                             <button
-                                onclick="window.location.href='{{ $id !== null ? route('users.index') : route('dashboard') }}'"
+                                onclick="window.location.href='{{ isset($id) ? route('users.index') : route('dashboard') }}'"
                                 class="btn btn-primary ">
-                                {{ $id !== null ? 'Cancel' : 'Cancel' }}
+                                {{ isset($id) ? 'Cancel' : 'Cancel' }}
                             </button>
-                            <button type="submit"
-                                class="btn btn-primary">{{ $id !== null ? 'Save' : 'Save' }}</button>
+                            <button type="submit" class="btn btn-primary">{{ isset($id) ? 'Save' : 'Save' }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+    </form>
     </div>
 </x-app-layout>

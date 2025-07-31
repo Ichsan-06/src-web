@@ -1,23 +1,16 @@
 <x-app-layout :assets="$assets ?? []">
-    <div>
-        <?php
-        $id = $id ?? null;
-        ?>
+    <form action="{{ isset($id) ? route('product_page_setting.update', $id) : route('product_page_setting.add-benefit') }}"
+        method="POST" enctype="multipart/form-data">
+        @csrf
         @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['product_page_setting.update', $id],
-                'method' => 'patch',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
-        @else
-            {!! Form::open(['route' => ['product_page_setting.add-benefit'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            @method('patch')
         @endif
         <div class="row">
             <div class="col-xl-12 col-lg-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'New' }} Benefit Information</h4>
+                            <h4 class="card-title">{{ isset($id) ? 'Update' : 'New' }} Benefit Information</h4>
                         </div>
                         <div class="card-action">
                             <a href="{{ route('product_page_setting.index') }}" class="btn btn-primary" role="button">Back</a>
@@ -29,7 +22,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="title">Title: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('title', old('title') ?? $data->title ?? '', ['class' => 'form-control', 'placeholder' => 'Title', 'required']) }}
+                                    <input type="text" name="title" class="form-control" value="{{ old('title') ?? $data->title ?? '' }}" placeholder="Title" required>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="description">Description: <span
@@ -39,27 +32,23 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="file">File: <span class="text-danger">*</span></label>
                                     {{-- IMG --}}
-                                    @if ($id !== null)
+                                    @if (isset($id))
                                         <p><img src="{{ asset($data->getFirstMediaUrl('image')) }}" alt="" width="100"></p>
-                                        {{ Form::file('file', ['class' => 'form-control', 'placeholder' => 'File', 'nullable' => true]) }}
+                                        <input type="file" name="file" class="form-control" placeholder="File" {{ isset($id) ? '' : 'required' }}>
                                     @else
-                                        {{ Form::file('file', ['class' => 'form-control', 'placeholder' => 'File', 'nullable' => true]) }}
+                                        <input type="file" name="file" class="form-control" placeholder="File" required>
                                     @endif
                                     <span class="text-muted">* File is not required if you don't want to change it</span>
                                 </div>
                             </div>
-                            <button
-                                onclick="window.location.href='{{ $id !== null ? route('product_page_setting.index') : route('dashboard') }}'"
-                                class="btn btn-primary ">
-                                {{ $id !== null ? 'Cancel' : 'Cancel' }}
+                            <button type="button" onclick="window.location.href='{{ isset($id) ? route('product_page_setting.index') : route('dashboard') }}'" class="btn btn-primary">
+                                {{ isset($id) ? 'Cancel' : 'Cancel' }}
                             </button>
-                            <button type="submit"
-                                class="btn btn-primary">{{ $id !== null ? 'Save' : 'Save' }}</button>
+                            <button type="submit" class="btn btn-primary">{{ isset($id) ? 'Save' : 'Save' }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
-    </div>
+    </form>
 </x-app-layout>

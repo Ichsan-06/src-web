@@ -1,23 +1,15 @@
 <x-app-layout :assets="$assets ?? []">
-    <div>
-        <?php
-        $id = $id ?? null;
-        ?>
+    <form action="{{ isset($id) ? route('category_product.update', $id) : route('category_product.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['category_product.update', $id],
-                'method' => 'patch',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
-        @else
-            {!! Form::open(['route' => ['category_product.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            @method('patch')
         @endif
         <div class="row">
             <div class="col-xl-12 col-lg-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'New' }} Category Information</h4>
+                            <h4 class="card-title">{{ isset($id) ? 'Update' : 'New' }} Category Information</h4>
                         </div>
                         <div class="card-action">
                             <a href="{{ route('category_product.index') }}" class="btn btn-primary" role="button">Back</a>
@@ -29,21 +21,20 @@
                                 <div class="form-group col-md-12">
                                     <label class="form-label fw-bold" for="name">Name: <span
                                             class="text-danger">*</span></label>
-                                    {{ Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Name', 'required']) }}
+                                    <input type="text" name="name" class="form-control" value="{{ old('name', $data->name ?? '') }}" placeholder="Name" required>
                                 </div>
                             </div>
                             <button
-                                onclick="window.location.href='{{ $id !== null ? route('category_product.index') : route('dashboard') }}'"
+                                onclick="window.location.href='{{ isset($id) ? route('category_product.index') : route('dashboard') }}'"
                                 class="btn btn-primary ">
-                                {{ $id !== null ? 'Cancel' : 'Cancel' }}
+                                {{ isset($id) ? 'Cancel' : 'Cancel' }}
                             </button>
                             <button type="submit"
-                                class="btn btn-primary">{{ $id !== null ? 'Save' : 'Save' }}</button>
+                                class="btn btn-primary">{{ isset($id) ? 'Save' : 'Save' }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
-    </div>
+    </form>
 </x-app-layout>

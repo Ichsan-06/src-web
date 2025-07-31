@@ -11203,6 +11203,7 @@
             "time": "2025-02-20T13:13:55+00:00"
         },
         {
+<<<<<<< Updated upstream
             "name": "staabm/side-effects-detector",
             "version": "1.0.5",
             "source": {
@@ -11264,6 +11265,17 @@
             },
             "dist": {
                 "type": "zip",
+=======
+            "name": "symfony/yaml",
+            "version": "v7.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "b8d7d868da9eb0919e99c8830431ea087d6aae30"
+            },
+            "dist": {
+                "type": "zip",
+>>>>>>> Stashed changes
                 "url": "https://api.github.com/repos/symfony/yaml/zipball/b8d7d868da9eb0919e99c8830431ea087d6aae30",
                 "reference": "b8d7d868da9eb0919e99c8830431ea087d6aae30",
                 "shasum": ""
@@ -11329,6 +11341,7 @@
                 }
             ],
             "time": "2025-07-10T08:47:49+00:00"
+<<<<<<< Updated upstream
         },
         {
             "name": "ta-tikoma/phpunit-architecture-test",
@@ -11388,6 +11401,8 @@
                 "source": "https://github.com/ta-tikoma/phpunit-architecture-test/tree/0.8.5"
             },
             "time": "2025-04-20T20:23:40+00:00"
+=======
+>>>>>>> Stashed changes
         },
         {
             "name": "theseer/tokenizer",

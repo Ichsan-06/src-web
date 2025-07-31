@@ -1,69 +1,64 @@
 <x-app-layout :assets="$assets ?? []">
-    <div>
-        <?php
-        $id = $id ?? null;
-        ?>
+    <form action="{{ isset($id) ? route('products.update', $id) : route('products.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         @if (isset($id))
-            {!! Form::model($data, [
-                'route' => ['products.update', $id],
-                'method' => 'patch',
-                'enctype' => 'multipart/form-data',
-            ]) !!}
-        @else
-            {!! Form::open(['route' => ['products.store'], 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
+            @method('PATCH')
         @endif
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="header-title">
-                            <h4 class="card-title">{{ $id !== null ? 'Update' : 'New' }} Product Information</h4>
-                        </div>
-                        <div class="card-action">
-                            <a href="{{ route('products.index') }}" class="btn btn-primary" role="button">Back</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="new-user-info">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label class="form-label fw-bold" for="name">Name: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Name', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="form-label fw-bold" for="image">Image: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::file('image', ['class' => 'form-control', 'placeholder' => 'Image', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="form-label fw-bold" for="price">Price: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::number('price', old('price'), ['class' => 'form-control', 'placeholder' => 'Price', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="form-label fw-bold" for="category_id">Category: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::select('category_id', $categories->pluck('name', 'id'), old('category_id'), ['class' => 'form-control', 'placeholder' => 'Select Category', 'required']) }}
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="form-label fw-bold" for="unit_type">Unit Type: <span
-                                            class="text-danger">*</span></label>
-                                    {{ Form::select('unit_type', ['pcs' => 'Pcs', 'kg' => 'Kg', 'ltr' => 'Ltr'], old('unit_type'), ['class' => 'form-control', 'placeholder' => 'Select Unit Type', 'required']) }}
-                                </div>
-                            </div>
-                            <button
-                                onclick="window.location.href='{{ $id !== null ? route('categories.index') : route('dashboard') }}'"
-                                class="btn btn-primary ">
-                                {{ $id !== null ? 'Cancel' : 'Cancel' }}
-                            </button>
-                            <button type="submit"
-                                class="btn btn-primary">{{ $id !== null ? 'Save' : 'Save' }}</button>
-                        </div>
-                    </div>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">{{ isset($id) ? 'Update' : 'New' }} Product Information</h4>
+                </div>
+                <div class="card-action">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary" role="button">Back</a>
                 </div>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="form-label fw-bold" for="name">Name: <span
+                                class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $data->name ?? '') }}" placeholder="Name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label fw-bold" for="image">Image: <span
+                                class="text-danger">*</span></label>
+                        <input type="file" name="image" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label fw-bold" for="price">Price: <span
+                                class="text-danger">*</span></label>
+                        <input type="number" name="price" class="form-control" value="{{ old('price', $data->price ?? '') }}" placeholder="Price" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label fw-bold" for="category_id">Category: <span
+                                class="text-danger">*</span></label>
+                        <select name="category_id" class="form-control" required>
+                            <option value="" disabled selected>Select Category</option>
+                            @foreach ($categories as $item)
+                                <option value="{{ $item->id }}" {{ isset($id) && (old('category_id') == $item->id || $data->category_id == $item->id) ? 'selected' : '' }}>{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="form-label fw-bold" for="unit_type">Unit Type: <span
+                                class="text-danger">*</span></label>
+                        <select name="unit_type" class="form-control" required>
+                            <option value="" disabled selected>Select Unit Type</option>
+                            <option value="pcs" {{ isset($id) && (old('unit_type') == 'pcs' || $data->unit_type == 'pcs') ? 'selected' : '' }}>Pcs</option>
+                            <option value="kg" {{ isset($id) && (old('unit_type') == 'kg' || $data->unit_type == 'kg') ? 'selected' : '' }}>Kg</option>
+                            <option value="ltr" {{ isset($id) && (old('unit_type') == 'ltr' || $data->unit_type == 'ltr') ? 'selected' : '' }}>Ltr</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button"
+                    onclick="window.location.href='{{ isset($id) ? route('products.index') : route('dashboard') }}'"
+                    class="btn btn-primary ">
+                    {{ isset($id) ? 'Cancel' : 'Cancel' }}
+                </button>
+                <button type="submit"
+                    class="btn btn-primary">{{ isset($id) ? 'Save' : 'Save' }}</button>
+            </div>
         </div>
-        {!! Form::close() !!}
-    </div>
+    </form>
 </x-app-layout>
