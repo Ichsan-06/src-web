@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ServiceTypeController;
 // Packages
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ArticleController;
@@ -76,7 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Users Module
     Route::resource('users', UserController::class);
-    Route::resource('banners', BannerController::class);
+    Route::resource('banners', BannerController::class)->middleware(['auth']);
+    Route::resource('service_types', ServiceTypeController::class)->middleware(['auth']);
     Route::resource('home_setting', HomeSettingController::class);
     //Category
     Route::resource('categories', CategoryController::class);
